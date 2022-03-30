@@ -38,7 +38,7 @@ class PulseCounter
         void event_disable(pcnt_evt_type_t evt_type);
         void set_event_value(pcnt_evt_type_t evt_type, int16_t value);
         void get_event_value(pcnt_evt_type_t evt_type, int16_t *value);
-        void isr_register(void (*fn)(void *), void *arg, int intr_alloc_flags);
+        void isr_register(void (*fn)(void *), void *arg);
         void isr_unregister();
         void set_filter_value(uint16_t filter_val);
         void filter_enable();

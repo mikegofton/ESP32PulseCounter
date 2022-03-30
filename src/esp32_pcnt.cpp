@@ -64,9 +64,9 @@ void PulseCounter::interrupt_disable()
     pcnt_intr_disable(_unit);
 }
 
-void PulseCounter::isr_register(void (*fn)(void *), void *arg, int intr_alloc_flags)
+void PulseCounter::isr_register(void (*fn)(void *), void *arg)
 {
-    pcnt_isr_register(fn, arg, intr_alloc_flags, &_isr_handle);
+    pcnt_isr_register(fn, arg, (int)0, &_isr_handle);
 }
 
 void PulseCounter::isr_unregister()
