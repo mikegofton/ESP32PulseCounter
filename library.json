@@ -1,13 +1,29 @@
 {
     "name": "ESP32PulseCounter",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description":"library for ESP32 hardware pulse counters",
     "repository":
     {
       "type": "git",
       "url": "https://github.com/mikegofton/ESP32PulseCounter.git"
     },
-    "authors": {"name":"Mike Gofton"},
+    "export": {
+      "include":
+      [
+          "./src/*",
+          "./examples/*",
+          "./include/*",
+          "LICENSE"
+      ]
+    },
+    "authors":
+    [
+      {
+        "name":"Mike Gofton",
+        "email":"mike.gofton@gmail.com",
+        "url":"https://github.com/mikegofton/ESP32PulseCounter.git"
+      }
+    ],
     "keywords": "PulseCounter",
     "frameworks":"arduino",
     "platforms":"espressif32",
