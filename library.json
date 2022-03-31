@@ -1,6 +1,6 @@
 {
     "name": "ESP32PulseCounter",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description":"library for ESP32 hardware pulse counters",
     "repository":
     {
@@ -24,7 +24,7 @@
         "url":"https://github.com/mikegofton/ESP32PulseCounter.git"
       }
     ],
-    "keywords": "PulseCounter",
+    "keywords": "counter, pulse counter, pcnt, ESP32PulseCounter, ESP32",
     "frameworks":"arduino",
     "platforms":"espressif32",
     "license": "MIT"
