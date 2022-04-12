@@ -44,12 +44,12 @@ class PulseCounter
         void filter_enable();
         void filter_disable();
     private:
-        pcnt_unit_t _unit;
-        pcnt_channel_t _channel;
-        int16_t _sig_pin , _ctrl_pin ;
-        pcnt_count_mode_t _pos_mode , _neg_mode;
-        pcnt_ctrl_mode_t _hctrl_mode , lctrl_mode;
-        pcnt_isr_handle_t _isr_handle;
+        pcnt_unit_t unit;
+        pcnt_channel_t channel;
+        int16_t sig_pin , ctrl_pin ;
+        pcnt_count_mode_t pos_mode , neg_mode;
+        pcnt_ctrl_mode_t hctrl_mode , lctrl_mode;
+        pcnt_isr_handle_t isr_handle;
         pcnt_config_t pcnt_config;
 };
 #endif
