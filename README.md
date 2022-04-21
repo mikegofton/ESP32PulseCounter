@@ -1,5 +1,6 @@
 # ESP32PulseCounter
-Arduino library for the 8 x 16 bit hardware counters available on the ESP32
+Arduino library for the 8 x signed 16 bit hardware counters available on the ESP32.
+This library was developed on PlatformIO.
 
 The PCNT (Pulse Counter) module is designed to count the number of rising and/or falling edges of an input signal.
 
@@ -11,12 +12,9 @@ The count and control inputs have optional filters which can be used to discard 
 
 The pulse counters have five watchpoints that share one interrupt. Interrupt generation can be enabled or disabled
 for each individual watchpoint. The watchpoints are:
-• Maximum count value: Triggered when PULSE_CNT >= PCNT_CNT_H_LIM_Un. Additionally, this will reset
-the counter to 0. PCNT_CNT_H_LIM_Un should be a positive number.
-• Minimum count value: Triggered when PULSE_CNT <= PCNT_CNT_L_LIM_Un. Additionally, this will reset
-the counter to 0. PCNT_CNT_L_LIM_Un should be a negative number.
-• Two threshold values: Triggered when PULSE_CNT = PCNT_THR_THRES0_Un or PCNT_THR_THRES1_Un.
-• Zero: Triggered when PULSE_CNT = 0.
+• Maximum / Minimum count value: Triggered when the counter value reaches the set upper or lower value. The upper limit should be a positive number, the lower limit a negative number. Additionally, this will reset the counter to 0.
+• Two threshold values, threshold 0 and 1. Triggered when the value is reached, the counting continues.
+• Zero: Triggered when the counter value is zero, the counting continues.
 
 This library is coded for the Arduino Framework and is based on ESP-IDF release 4.4
 
