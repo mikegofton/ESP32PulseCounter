@@ -1,5 +1,5 @@
 /*
-esp32_pcnt.h is a wrapper for the hardware pulse counter devices in the Espressif ESP32 SoC.
+esp32_pcnt.h is a wrapper for the hardware pulse counter devices in the Espressif ESP32 SoC
 
 The PCNT (Pulse Counter) module is designed to count the number of rising and/or falling edges of an input signal.
 Each pulse counter unit has a 16-bit signed counter register and two channels which can be configured
@@ -10,7 +10,7 @@ The count and control inputs have optional filters that can be used to discard u
 There are five counter state watch events which are able to trigger an interrupt. The event happens on the pulse counter
 reaching specific values: minimum or maximum count values, two threshold values and counter = zero.
 
-This library is coded for the Arduino Framework and is based on ESP-IDF relese 4.4
+This library is coded for the Arduino Framework and is based on ESP-IDF release 4.4
 Additional ESP=IDF documentation is available here 
 https://docs.espressif.com/projects/esp-idf/en/release-v4.4/esp32/api-reference/peripherals/pcnt.html
 
@@ -50,12 +50,13 @@ class PulseCounter
         void event_disable(pcnt_evt_type_t evt_type);
         void set_event_value(pcnt_evt_type_t evt_type, int16_t value);
         void get_event_value(pcnt_evt_type_t evt_type, int16_t *value);
+        uint8_t event_status();
         void isr_register(void (*fn)(void *), void *arg);
         void isr_unregister();
         void set_filter_value(uint16_t filter_val);
         void filter_enable();
         void filter_disable();
-        void attach_interrupt(void (*isr_handler)(uint8_t event));
+        void attach_interrupt(void (*isr_handler)(void *));
 
     private:
         int16_t sig_pin, ctrl_pin;
@@ -64,8 +65,8 @@ class PulseCounter
         pcnt_isr_handle_t isr_handle;
         pcnt_config_t pcnt_config;
         pcnt_unit_t counter_id; // (0 ~ 7) for ESP32
-        void instance_isr();
-        void (*usr_isr) (uint8_t event);
+        void instance_isr(void);
+        void (*usr_isr)(void *);
         static uint8_t counter_used; // record counter allocation with a bit mask, i.e. bit 0 = counter 0, bit 1 = counter 1 
         static PulseCounter* obj_instance[COUNTER_MAX]; // array to hold instance object references
         static void unit0_isr(void *);

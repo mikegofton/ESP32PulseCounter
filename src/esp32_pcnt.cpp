@@ -6,8 +6,7 @@ This software is released to the public domain under the MIT Licence, copyright 
 #include <esp32_pcnt.h>
 
 PulseCounter::PulseCounter() {
-    //Install PCNT ISR service for unit specific interrupts
-    pcnt_isr_service_install(0);
+    
 }
 
 PulseCounter::~PulseCounter() {
@@ -22,7 +21,7 @@ void PulseCounter::initialise(int PCNT_INPUT_SIG_IO, int PCNT_INPUT_CTRL_IO)
     ctrl_pin = PCNT_INPUT_CTRL_IO;
 
     // allocate isr callback functions
-    static void((*isr_func[COUNTER_MAX])(void *)) = {
+    static void ((*isr_func[COUNTER_MAX])(void *)) = {
         unit0_isr, unit1_isr, unit2_isr, unit3_isr, unit4_isr, unit5_isr, unit6_isr, unit7_isr
     };
 
@@ -51,6 +50,11 @@ void PulseCounter::initialise(int PCNT_INPUT_SIG_IO, int PCNT_INPUT_CTRL_IO)
     }
 }
 
+//definition of static class members used for handling of instance interrupts
+uint8_t PulseCounter::counter_used = 0; //allocation register for counter use
+PulseCounter* PulseCounter::obj_instance[COUNTER_MAX];
+
+
 void PulseCounter::unit0_isr(void *) { PulseCounter::obj_instance[0]->instance_isr(); }
 void PulseCounter::unit1_isr(void *) { PulseCounter::obj_instance[1]->instance_isr(); }
 void PulseCounter::unit2_isr(void *) { PulseCounter::obj_instance[2]->instance_isr(); }
@@ -62,18 +66,13 @@ void PulseCounter::unit7_isr(void *) { PulseCounter::obj_instance[7]->instance_i
 
 void PulseCounter::instance_isr() {
     // call the user isr
-    uint8_t event = PCNT.status_unit[counter_id].val;
-    usr_isr(event);
+    usr_isr;
 }
-
-void PulseCounter::attach_interrupt(void (*isr_handler)(uint8_t event)) {
+void PulseCounter::attach_interrupt(void (*isr_handler)(void *)) {
     // save user isr function
     usr_isr = isr_handler;
 }
 
-//definition of static class members
-uint8_t PulseCounter::counter_used = 0;
-PulseCounter* PulseCounter::obj_instance[COUNTER_MAX];
 
 void PulseCounter::set_mode(pcnt_count_mode_t pos_mode, pcnt_count_mode_t neg_mode, pcnt_ctrl_mode_t hctrl_mode, pcnt_ctrl_mode_t lctrl_mode) {
     pcnt_set_mode(counter_id, PCNT_CHANNEL_0, pos_mode, neg_mode, hctrl_mode, lctrl_mode);
@@ -141,4 +140,10 @@ void PulseCounter::set_event_value(pcnt_evt_type_t evt_type, int16_t value) {
 
 void PulseCounter::get_event_value(pcnt_evt_type_t evt_type, int16_t *value) {
     pcnt_get_event_value(counter_id, evt_type, value);
+}
+
+uint8_t PulseCounter::event_status() {
+    uint32_t status;
+    pcnt_get_event_status(counter_id, &status);
+    return (uint8_t)(status);
 }
